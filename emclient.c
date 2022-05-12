@@ -3,6 +3,7 @@
  * Class: Computer Networking
  * Descr: connects to smtp2go, and creates an email client
  * Only works on Linux based OS
+ * need to make an account with smtp2go.com
 */
 
 #include <sys/socket.h>
@@ -27,12 +28,12 @@ int main() {
     char user[65];
     char passw[65];
     char serv[30];
-    char email[50];                     //sender email
-    char email2[50];                    //recipient email
-    char sender[20];                    //sender's name
-    char recpt[20];                     //recipient's name
-    char subj[50];                      //subject
-    char body[1024];                    //body of message
+    char email[50]; //sender email
+    char email2[50]; //recipient email
+    char sender[20]; //sender's name
+    char recpt[20]; //recipient's name
+    char subj[50]; //subject
+    char body[1024]; //body of message
     char sendtoserv[1000];
     struct sockaddr_in servaddr;
     char *ip_addr;
@@ -64,9 +65,9 @@ int main() {
     //assign IP, port
     servaddr.sin_family = AF_INET;
     host = gethostbyname(serv); //get ip address from the given string in serv
-    servaddr.sin_port = htons(portno_int);
-    ip_addr = inet_ntoa(*(struct in_addr*)host->h_addr);
-    inet_pton(AF_INET, ip_addr, &(servaddr.sin_addr));
+    servaddr.sin_port = htons(portno_int); //converts short integer host order to network order
+    ip_addr = inet_ntoa(*(struct in_addr*)host->h_addr); //converts network order to dotted ipv4 notation
+    inet_pton(AF_INET, ip_addr, &(servaddr.sin_addr)); //converts ip_addr to AF_INET family and copies to servaddr.sin_addr 
 
     //connect to the port and ip address
     if(connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) < 0){
@@ -80,7 +81,7 @@ int main() {
     //execute EHLO command
     write(sockfd, ehlo, strlen(ehlo));
     sleep(1);
-    bzero(message, sizeof(message)); // zero the message out in preparation to receive other message
+    bzero(message, sizeof(message)); //zero the message out in preparation to receive other message
     read(sockfd, message, sizeof(message));
     printf("Response: %s\n", message);
 
@@ -94,7 +95,7 @@ int main() {
     //grab username from user, base64 encode
     printf("Username: ");
     fgets(user, sizeof(user), stdin);
-    write(sockfd, user, strlen(user));    //write username to server
+    write(sockfd, user, strlen(user)); //write username to server
 
     sleep(1);
     bzero(message, sizeof(message));
@@ -123,7 +124,7 @@ int main() {
             close(sockfd);                      //safely close the socket
             break;
         }
-        email[strlen(email)-1] = 0;
+        email[strlen(email)-1] = 0; //set last char to NULL
         snprintf(sendtoserv, sizeof(sendtoserv), "MAIL FROM: %s\n", email);
         write(sockfd, sendtoserv, strlen(sendtoserv));
         sleep(1);
@@ -133,10 +134,10 @@ int main() {
         memset(message, '\0', sizeof(message));
 
         //ask for email address of recippient and get the response
-        bzero(sendtoserv, sizeof(sendtoserv));          //clear out the sendtoserv buffer
+        bzero(sendtoserv, sizeof(sendtoserv));  //clear out the sendtoserv buffer
         printf("Recipient's Email Address: ");
         fgets(email2, sizeof(email2), stdin);
-        email2[strlen(email2)-1] = 0;
+        email2[strlen(email2)-1] = 0;           //set last char to NULL
         snprintf(sendtoserv, sizeof(sendtoserv), "RCPT TO: %s\n", email2);
         write(sockfd, sendtoserv, strlen(sendtoserv));
         sleep(1);

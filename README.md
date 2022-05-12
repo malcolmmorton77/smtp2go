@@ -1,4 +1,4 @@
-### Simple Mail Client using SMTP2go.com
+# Simple Mail Client using SMTP2go.com
 
 ### Malcolm Morton
 
@@ -15,7 +15,7 @@
 
 #### Compile:
 
-make
+- make
 
 #### Run:
 

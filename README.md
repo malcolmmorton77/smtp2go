@@ -22,5 +22,5 @@
 - `./emclient`
 - When prompted for "SMTP Server:" enter `mail.smtp2go.com`
 - When prompted for "Port:" enter `2525`
-- When prompted for "Username:" enter it in base64 encoding
-- When prompted for "Password:" enter it in base64 encoding
+- When prompted for "Username:" enter your username in base64 encoding
+- When prompted for "Password:" enter your password in base64 encoding

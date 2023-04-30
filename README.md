@@ -24,3 +24,6 @@
 - When prompted for "Port:" enter `2525`
 - When prompted for "Username:" enter your username in base64 encoding
 - When prompted for "Password:" enter your password in base64 encoding
+
+#### Clean up code:
+- `make clean` deletes the object file and executable file
